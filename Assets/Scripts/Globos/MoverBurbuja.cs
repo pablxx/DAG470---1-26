@@ -31,6 +31,7 @@ public class MoverBurbuja : MonoBehaviour
         float xBurbuja = Mathf.Sin(frecuenciaMovimiento * Time.time) * amplitudMovimiento;
 
         transform.Translate(new Vector2(xBurbuja, velocidadMovimiento)  * Time.deltaTime);
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -42,6 +43,9 @@ public class MoverBurbuja : MonoBehaviour
             puedeMoverse = false;
             //activamos el texto de puntaje
             textoBurbuja.SetActive(true);
+
+            //sumamos el puntaje al total
+            ControlPuntaje.Instancia.SumarPuntos(puntajeBurbuja);
 
             //desactivamos el sprite y el collider de la burbuja
             spriteBurbuja.enabled = false;
