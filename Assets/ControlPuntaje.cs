@@ -21,7 +21,6 @@ public class ControlPuntaje : MonoBehaviour
         {
             Instancia = this;
         }
-           
     }
 
     private void Start()
@@ -38,11 +37,15 @@ public class ControlPuntaje : MonoBehaviour
 
     private void OnDestroy()
     {
-        Debug.Log("Puntaje total: " + puntajeMaximo);
+        Debug.Log("Puntaje total: " + puntajeTotal);
+        Debug.Log($"Puntaje Maximo: { puntajeMaximo }");
+
         if (puntajeTotal > puntajeMaximo)
         {
-            PlayerPrefs.SetInt("PuntajeMaximo", puntajeMaximo);
+            Debug.Log("Guardando nuevo record");
+            PlayerPrefs.SetInt("PuntajeMaximo", puntajeTotal);
+            //Terminamos salvando el ultimo valor
+            PlayerPrefs.Save();
         }
-        
     }
 }
