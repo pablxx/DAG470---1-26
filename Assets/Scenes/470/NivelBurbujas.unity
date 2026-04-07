@@ -2487,8 +2487,8 @@ Transform:
   m_GameObject: {fileID: 1362522054}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.37, z: 0}
-  m_LocalScale: {x: 0.57, y: 1, z: 1}
+  m_LocalPosition: {x: 0.0009, y: 1.3343, z: 0}
+  m_LocalScale: {x: 0.91854495, y: 0.9630081, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2051094817}
@@ -3402,6 +3402,7 @@ MonoBehaviour:
   imagenEnemigo: {fileID: 2116441050}
   posPlayer: {fileID: 1056708046}
   rbEnemigo: {fileID: 0}
+  saludEnemigo: {fileID: 0}
 --- !u!212 &2116441050
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3564,6 +3565,10 @@ MonoBehaviour:
     m_Bits: 64
   posGlobo: {fileID: 1362522055}
   radioGlobo: 0.5
+  saludActual: 0
+  enemigo: {fileID: 0}
+  globo: {fileID: 1362522054}
+  paracaidas: {fileID: 943435019}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
