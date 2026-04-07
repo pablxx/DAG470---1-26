@@ -2957,10 +2957,12 @@ MonoBehaviour:
   cantidadHits: 1
   infoEnemigo:
     tipo: 0
-    velocidad: 2
+    velocidad: 1
     color: {r: 1, g: 0.9009434, b: 0.9009434, a: 1}
   estadoEnemigo: 1
   imagenEnemigo: {fileID: 2116441050}
+  posPlayer: {fileID: 1056708046}
+  rbEnemigo: {fileID: 0}
 --- !u!212 &2116441050
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3025,7 +3027,7 @@ Transform:
   m_GameObject: {fileID: 2116441048}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.57, y: -0.77, z: 0}
+  m_LocalPosition: {x: -0.91, y: -0.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3046,7 +3048,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0.5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

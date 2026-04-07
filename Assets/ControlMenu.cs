@@ -59,4 +59,5 @@ public class ControlMenu : MonoBehaviour
     public void CambiarEscena(string escenaSiguiente){   
         StartCoroutine(TransicionEscena(escenaSiguiente));
     }
+
 }
