@@ -40,7 +40,7 @@ public class Enemigo : MonoBehaviour
     [SerializeField] Transform posPlayer;
     [SerializeField] Rigidbody2D rbEnemigo;
 
-    
+    [SerializeField] SaludEnemigo saludEnemigo;
 
     private void Start()
     {
@@ -50,12 +50,25 @@ public class Enemigo : MonoBehaviour
 
         rbEnemigo = GetComponent<Rigidbody2D>();
 
+        saludEnemigo = GetComponent<SaludEnemigo>();
+        saludEnemigo.CargarSalud(cantidadHits);
+    }
+
+    public void ActualizarEstadoEnemigo(EstadoEnemigo nuevoEstado)
+    {
+        estadoEnemigo = nuevoEstado;
+    }
+
+    public EstadoEnemigo GetEstadoEnemigo()
+    {
+        return estadoEnemigo;
     }
 
     IEnumerator InflarGlobo()
     {
         yield return new WaitForSeconds(tiempoInflado);
         estadoEnemigo = EstadoEnemigo.Buscando;
+        saludEnemigo.CargarSalud(cantidadHits + 1);
     }
 
     void Update()
@@ -66,12 +79,12 @@ public class Enemigo : MonoBehaviour
                 //
                 MoverHaciaPlayer();
                 break;
-            case EstadoEnemigo.Inflando:
-                StartCoroutine(InflarGlobo());
+            //case EstadoEnemigo.Inflando:
+            //    StartCoroutine(InflarGlobo());
                 //estadoEnemigo = EstadoEnemigo.Cayendo;
-                break;
+                //break;
             case EstadoEnemigo.Cayendo:
-                //
+                rbEnemigo.gravityScale = 2f; // Enable gravity to make the enemy fall naturally.
                 //transform.Translate(Vector3.down * velocidadActual * Time.deltaTime);
                 break;
             default:
@@ -81,10 +94,8 @@ public class Enemigo : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (estadoEnemigo != EstadoEnemigo.Buscando)
-            return;
-
-        ElevarEnemigo();
+        if (estadoEnemigo == EstadoEnemigo.Buscando)
+            ElevarEnemigo();
     }
 
     void ElevarEnemigo()
@@ -111,7 +122,7 @@ public class Enemigo : MonoBehaviour
     void MoverHaciaPlayer()
     {
         Vector2 distancia = posPlayer.position - transform.position;
-        Debug.Log("Distancia es " + Mathf.Abs(distancia.x));
+        //Debug.Log("Distancia es " + Mathf.Abs(distancia.x));
 
         if (Mathf.Abs(distancia.x) > 0.5f)
         {
