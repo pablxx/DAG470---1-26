@@ -42,6 +42,8 @@ public class Enemigo : MonoBehaviour
 
     [SerializeField] SaludEnemigo saludEnemigo;
 
+    [SerializeField] bool pisando;
+
     private void Start()
     {
         velocidadActual = infoEnemigo.velocidad;
@@ -52,6 +54,10 @@ public class Enemigo : MonoBehaviour
 
         saludEnemigo = GetComponent<SaludEnemigo>();
         saludEnemigo.CargarSalud(cantidadHits);
+
+        //usar esta linea con cuidado, asume que el jugador siempre va a estar presente en la escena y que tiene el tag "Player"
+        //ademas navega por TODA LA JERARQUIA, para encontrarlo
+        posPlayer = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     public void ActualizarEstadoEnemigo(EstadoEnemigo nuevoEstado)
@@ -67,6 +73,7 @@ public class Enemigo : MonoBehaviour
     IEnumerator InflarGlobo()
     {
         yield return new WaitForSeconds(tiempoInflado);
+        saludEnemigo.RestaurarGlobo();
         estadoEnemigo = EstadoEnemigo.Buscando;
         saludEnemigo.CargarSalud(cantidadHits + 1);
     }
@@ -79,14 +86,14 @@ public class Enemigo : MonoBehaviour
                 //
                 MoverHaciaPlayer();
                 break;
-            //case EstadoEnemigo.Inflando:
-            //    StartCoroutine(InflarGlobo());
+           //case EstadoEnemigo.Inflando:
+                //StartCoroutine(InflarGlobo());
                 //estadoEnemigo = EstadoEnemigo.Cayendo;
                 //break;
-            case EstadoEnemigo.Cayendo:
-                rbEnemigo.gravityScale = 2f; // Enable gravity to make the enemy fall naturally.
-                //transform.Translate(Vector3.down * velocidadActual * Time.deltaTime);
-                break;
+            //case EstadoEnemigo.Cayendo:
+            //    EnemigoCayendo(); // Enable gravity to make the enemy fall naturally.
+            //    //transform.Translate(Vector3.down * velocidadActual * Time.deltaTime);
+            //    break;
             default:
                 break;
         }
@@ -96,6 +103,50 @@ public class Enemigo : MonoBehaviour
     {
         if (estadoEnemigo == EstadoEnemigo.Buscando)
             ElevarEnemigo();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (estadoEnemigo == EstadoEnemigo.Cayendo && collision.gameObject.CompareTag("Piso"))
+        {
+            Debug.LogWarning("El enemigo ha caído al suelo.");
+            pisando = true;
+            estadoEnemigo = EstadoEnemigo.Inflando;
+            StartCoroutine(InflarGlobo());
+            // Aquí puedes agregar lógica adicional, como reproducir una animación de muerte o destruir el objeto.
+        }
+
+        if ((estadoEnemigo == EstadoEnemigo.Inflando || estadoEnemigo == EstadoEnemigo.Cayendo)
+            && (collision.gameObject.CompareTag("Player")))
+        {
+            saludEnemigo.AplicarDano();
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Piso"))
+        {
+            Debug.LogWarning("El enemigo ha empezado a flotar.");
+            pisando = false;
+        }
+    }
+
+    IEnumerator RutinaCaida()
+    {
+        rbEnemigo.gravityScale = .05f;
+        int direccionAleatoria = Random.Range(0, 2) * 2 - 1; // -1 o 1
+
+        while (estadoEnemigo == EstadoEnemigo.Cayendo)
+        {
+            transform.Translate(new Vector2(velocidadActual * Time.deltaTime * direccionAleatoria, 0));
+            yield return null;
+        }
+    }
+
+    public void EnemigoCayendo()
+    {
+        StartCoroutine(RutinaCaida());
     }
 
     void ElevarEnemigo()

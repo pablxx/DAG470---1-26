@@ -37,21 +37,30 @@ public class SaludEnemigo : MonoBehaviour
         }
     }
 
-    private void AplicarDano()
+    public void AplicarDano()
     {
         //Emitir sonido de daño
         saludActual -= 1;
         if (saludActual == 0)
         {
+            ControlPuntaje.Instancia.SumarPuntos(1000);
+            ControlJuego.Instancia.RestarEnemigo();
             Destroy(gameObject);
         }
         else if(saludActual == 1)
         {
             //El enemigo aun esta vivo, pero se le ha aplicado daño, por lo que se actualiza su estado a cayendo
             enemigo.ActualizarEstadoEnemigo(EstadoEnemigo.Cayendo);
+            enemigo.EnemigoCayendo();
             globo.SetActive(false);
             paracaidas.SetActive(true);
         }
+    }
+
+    public void RestaurarGlobo()
+    {
+        paracaidas.SetActive(false);
+        globo.SetActive(true);
     }
 
     private void OnDrawGizmos()
