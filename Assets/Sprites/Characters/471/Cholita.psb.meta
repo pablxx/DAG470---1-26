@@ -207,8 +207,8 @@ ScriptedImporter:
     spritePosition: {x: 564, y: 624}
   - name: Cabeza
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.26911756, y: 0.07027688}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
